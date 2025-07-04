@@ -91,10 +91,10 @@ const Navbar = () => {
 
           {/* Profile Button */}
           <div className="hidden md:flex">
-            <Link href="/profile">
+            <Link href="/signin">
               <button className="group bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-xl hover:shadow-purple-500/50">
                 <User className="inline-block w-5 h-5 mr-2 group-hover:animate-bounce" />
-                Profile
+                Get Started
               </button>
             </Link>
           </div>
@@ -135,7 +135,7 @@ const Navbar = () => {
               >
                 <button className="group bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-full w-full text-left transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50">
                   <User className="inline-block w-5 h-5 mr-2 group-hover:animate-bounce" />
-                  Profile
+                  Get Started
                 </button>
               </Link>
             </div>

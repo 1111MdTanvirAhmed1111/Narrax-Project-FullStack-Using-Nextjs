@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import './globals.css';
 import { ThemeProvider } from "@/contexts/theme-provider";
 import NextAuthContext from "@/contexts/NextAuthContext";
+import LoadingPage from "./loading";
+import { Suspense } from "react";
+
 
 export const metadata  =  {
   // Basic Metadata
@@ -156,8 +159,9 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Suspense fallback={<LoadingPage />}>
         {children}
-        
+        </Suspense>
         </ThemeProvider>
         </NextAuthContext>
       </body>
