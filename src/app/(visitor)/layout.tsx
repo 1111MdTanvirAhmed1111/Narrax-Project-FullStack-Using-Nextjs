@@ -1,8 +1,11 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
-import './globals.css';
-import { ThemeProvider } from "@/contexts/theme-provider";
-import NextAuthContext from "@/contexts/NextAuthContext";
+import '../globals.css';
+import Navbar from '@/components/Visitor/Navbar';
+import { session } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+
 
 export const metadata  =  {
   // Basic Metadata
@@ -131,12 +134,19 @@ const geistMono = Geist_Mono({
 
 
 
+
+
 export default async function RootLayout({
   
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
+  const SessionData = await session();
+if(SessionData?.user){
+  redirect('/home')
+}
 
 
 
@@ -148,18 +158,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextAuthContext>
-            
-                 <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+     
+            <Navbar />
         {children}
         
-        </ThemeProvider>
-        </NextAuthContext>
       </body>
     </html>
   );

@@ -1,8 +1,8 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
-import './globals.css';
-import { ThemeProvider } from "@/contexts/theme-provider";
-import NextAuthContext from "@/contexts/NextAuthContext";
+import '../globals.css';
+import { redirect } from "next/navigation";
+import { session } from '@/lib/auth';
 
 export const metadata  =  {
   // Basic Metadata
@@ -139,6 +139,12 @@ export default async function RootLayout({
 }>) {
 
 
+const SessionData = await session();
+
+    if(!SessionData){
+        redirect('/');
+    }
+
 
   return (
     <html lang="en">
@@ -148,18 +154,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextAuthContext>
-            
-                 <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+   
         {children}
         
-        </ThemeProvider>
-        </NextAuthContext>
       </body>
     </html>
   );

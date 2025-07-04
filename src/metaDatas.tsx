@@ -1,10 +1,6 @@
 
-import { Geist, Geist_Mono } from "next/font/google";
-import './globals.css';
-import { ThemeProvider } from "@/contexts/theme-provider";
-import NextAuthContext from "@/contexts/NextAuthContext";
 
-export const metadata  =  {
+export const metaObj= {
   // Basic Metadata
   title: "Narrax - Story Battles for Writers and Creators",
   description:
@@ -111,56 +107,10 @@ export const metadata  =  {
     telephone: false,
   },
 };
-export const viewport  = {
+export const viewportObj = {
     width: "device-width",
     initialScale: 1,
     maximumScale: 1,
     
   themeColor: "#ffffff",
   }
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-
-
-export default async function RootLayout({
-  
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-
-
-
-  return (
-    <html lang="en">
-      <head>
-        <link rel="icon" href="/narrax.ico" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <NextAuthContext>
-            
-                 <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-        {children}
-        
-        </ThemeProvider>
-        </NextAuthContext>
-      </body>
-    </html>
-  );
-}
