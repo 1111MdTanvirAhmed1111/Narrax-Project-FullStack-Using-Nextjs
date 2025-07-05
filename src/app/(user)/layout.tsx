@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import '../globals.css';
 import { redirect } from "next/navigation";
 import { session } from '@/lib/auth';
+import Header from '@/components/Home/Header';
 
 export const metadata  =  {
   // Basic Metadata
@@ -147,14 +148,14 @@ const SessionData = await session();
 
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/narrax.ico" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-   
+        <Header />
         {children}
         
       </body>

@@ -1,16 +1,47 @@
-// models/User.js
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: { type: String, unique: true, required: true },
-  image: String,
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
+  username:{
+    type:String,
+    required:true,
   },
-  createdAt: { type: Date, default: Date.now },
-});
+  email:{
+    type:String,
+    required:true,
+    unique:true,
+  },
+  
+ 
 
-export default mongoose.models.User || mongoose.model('User', userSchema);
+
+
+  role:{
+    type:String,
+    enum:['user','admin'],
+    default:'user',
+  },
+
+  profilePicture:{
+    type:String,
+    default:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+  },
+
+  profileCover:{
+    type:String,
+    default:'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+  },
+  
+
+  followers:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'User',
+  }],
+  following:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'User',
+  }],
+})
+
+const User = mongoose.model('User',userSchema) || mongoose.models.User
+
+export default User
