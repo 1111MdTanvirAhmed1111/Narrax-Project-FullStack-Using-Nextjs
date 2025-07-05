@@ -6,6 +6,14 @@ const PostStorySchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
   content: {
     type: String,
     required: true,
@@ -32,6 +40,7 @@ const PostStorySchema = new mongoose.Schema({
   },
   image: {
     type: String,
+    default: "",
   },
 });
 
