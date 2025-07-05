@@ -45,7 +45,7 @@ const ProfileStat = ({ stat }) => (
 export default function Navigation() {
   return (
     <GradientCard>
-      <nav className="space-y-3">
+      <nav className="space-y-3 ">
         {navigationItems.map((item, index) => (
           <NavigationItem key={index} item={item} isActive={item.active} />
         ))}

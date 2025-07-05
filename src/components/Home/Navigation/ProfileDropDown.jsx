@@ -28,8 +28,8 @@ return(<DropdownMenu>
   <AvatarImage src={session.user?.image} />
   <AvatarFallback>{session.user?.name}</AvatarFallback>
 </Avatar>        
-<span>{session.user?.name}</span>
-<span>{session.user?.email}</span>
+<span className="block">{session.user?.name}</span>
+<span className="block">{session.user?.email}</span>
 
     </DropdownMenuLabel>
     <DropdownMenuSeparator />

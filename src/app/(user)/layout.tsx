@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import '../globals.css';
 import { redirect } from "next/navigation";
 import { session } from '@/lib/auth';
-import Header from '@/components/Home/Header';
+import Header from '@/components/Home/Navigation/Header';
 
 export const metadata  =  {
   // Basic Metadata

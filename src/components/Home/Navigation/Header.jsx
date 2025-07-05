@@ -1,9 +1,10 @@
 'use client'
 import React from 'react'
 import { Search, Bell, Mail, Eye } from 'lucide-react'
-import ProfileDropDown from './Navigation/ProfileDropDown';
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useSession } from 'next-auth/react';
+import ProfileDropDown from './ProfileDropDown';
 
 
 export default function Header() {

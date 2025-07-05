@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Navigation from '@/components/Home/Navigation.jsx'
-import Header from '@/components/Home/Header.jsx'
 import CreateBattle from '@/components/Home/CreateBattle.jsx'
 import BattleFeed from '@/components/Home/BattleFeed.jsx'
 import TrendingCategories from '@/components/Home/TrendingCategories.jsx'
