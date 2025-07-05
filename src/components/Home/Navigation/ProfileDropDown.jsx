@@ -17,18 +17,19 @@ export default function ProfileDropDown({children}){
 
     const {data:session} = useSession()
 
-console.log(session)
 
-    return(<DropdownMenu>
+if(!session){return null}
+else{
+return(<DropdownMenu>
   <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
   <DropdownMenuContent>
     <DropdownMenuLabel>
-{/* <Avatar>
-  <AvatarImage src={image} />
-  <AvatarFallback>{name}</AvatarFallback>
+<Avatar>
+  <AvatarImage src={session.user?.image} />
+  <AvatarFallback>{session.user?.name}</AvatarFallback>
 </Avatar>        
-<span>{name}</span>
-<span>{email}</span> */}
+<span>{session.user?.name}</span>
+<span>{session.user?.email}</span>
 
     </DropdownMenuLabel>
     <DropdownMenuSeparator />
@@ -39,4 +40,6 @@ console.log(session)
   </DropdownMenuContent>
 </DropdownMenu>
     )
+}
+    
 }
