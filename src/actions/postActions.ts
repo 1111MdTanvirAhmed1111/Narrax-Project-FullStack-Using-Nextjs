@@ -3,9 +3,13 @@ import { session } from '@/lib/auth';
 import { imageUpload } from '@/lib/ImageUpload';
 import Story from '@/models/Story';
 import { revalidatePath } from 'next/cache';
-
+import dbConnect from '@/lib/dbConnect';
 
 export const createPost = async (userId:string,formData: FormData) => {
+
+
+  
+
   const file = formData.get('image') as File;
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
@@ -23,7 +27,7 @@ export const createPost = async (userId:string,formData: FormData) => {
     if(!userId){
       throw new Error('User not authenticated');
     }
-
+await dbConnect()
     const post = await Story.create({
       createdBy: userId,
       title,
@@ -51,6 +55,7 @@ return null
 
 
 export const getPosts = async () => {
+  await dbConnect()
 return await Story.find().populate('createdBy').sort({createdAt:-1})
 };
 
