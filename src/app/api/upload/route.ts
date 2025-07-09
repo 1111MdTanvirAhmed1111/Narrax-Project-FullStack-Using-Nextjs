@@ -1,13 +1,32 @@
-import NextAuth from 'next-auth';
+import NextAuth, { Session } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import dbConnect from '@/lib/dbConnect';
 import User from '@/models/User';
 
+// Define a custom session interface to include id and role
+interface CustomSession extends Session {
+  user: {
+    id?: string;
+    role?: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+}
+
+// Ensure environment variables are defined
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+  throw new Error('Missing Google OAuth environment variables. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env');
+}
+
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
@@ -16,42 +35,54 @@ const handler = NextAuth({
   },
   callbacks: {
     async signIn({ user }) {
-      await dbConnect();
+      try {
+        await dbConnect();
 
-      const existingUser = await User.findOne({ email: user.email });
+        const existingUser = await User.findOne({ email: user.email });
 
-      if (!existingUser) {
-        await User.create({
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          role: 'user',
-        });
+        if (!existingUser) {
+          await User.create({
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            role: 'user', // Default role
+          });
+        }
+
+        return true;
+      } catch (error) {
+        console.error('Error in signIn callback:', error);
+        return false;
       }
-
-      return true;
     },
 
     async jwt({ token, user }) {
-      await dbConnect();
+      try {
+        await dbConnect();
 
-      if (user) {
-        // This only runs on initial login
-        const dbUser = await User.findOne({ email: user.email });
-        token.id = dbUser._id.toString(); // Ensure it's a string
-        token.role = dbUser.role;
+        if (user?.email) {
+          const dbUser = await User.findOne({ email: user.email });
+
+          if (dbUser) {
+            token.id = dbUser._id.toString();
+            token.role = dbUser.role;
+          }
+        }
+
+        return token;
+      } catch (error) {
+        console.error('Error in jwt callback:', error);
+        return token;
       }
-
-      return token;
     },
 
     async session({ session, token }) {
-      // Ensure these values are carried over to the session object
-      if (session?.user) {
-        session.user.id = token.id || null;
-        session.user.role = token.role || 'user';
+      const customSession = session as CustomSession;
+      if (customSession.user) {
+        customSession.user.id = token.id as string | undefined;
+        customSession.user.role = token.role as string | undefined;
       }
-      return session;
+      return customSession;
     },
   },
 });
