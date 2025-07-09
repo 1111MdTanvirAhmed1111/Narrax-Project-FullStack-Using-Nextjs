@@ -25,7 +25,7 @@ const handler = NextAuth({
           name: user.name,
           email: user.email,
           image: user.image,
-          role: 'user', // optional: default role
+          role: 'user',
         });
       }
 
