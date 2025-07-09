@@ -1,8 +1,10 @@
 import React from 'react'
 import { Plus } from 'lucide-react'
 import GradientCard from './GradientCard.jsx'
-import CreateDialog from './CreateStory/CreateDialog';
+
 import { Input } from '@/components/ui/input';
+import CreateDialog from './CreateStory/CreateDialog';
+import { Suspense } from 'react';
 
 const categoryTags = [
   { emoji: '😱', label: 'Horror' },
@@ -23,6 +25,7 @@ export default function CreateBattle({ storyContent, setStoryContent }) {
         <Plus className="text-red-400 text-2xl w-8 h-8" />
         <h2 className="text-xl font-bold text-red-300">Create New Battle</h2>
       </div>
+      <Suspense fallback={<div>Loading...</div>}>
       <CreateDialog>
         <Input type="text" 
            placeholder="Write your story here... (max 500 words)"
@@ -31,6 +34,7 @@ export default function CreateBattle({ storyContent, setStoryContent }) {
          />
 
       </CreateDialog>
+      </Suspense>
       <div className="flex justify-between items-center mt-4">
         <div className="flex space-x-2">
           {categoryTags.map((category, index) => (

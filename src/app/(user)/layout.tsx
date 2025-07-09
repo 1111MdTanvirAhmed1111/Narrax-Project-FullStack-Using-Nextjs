@@ -155,8 +155,16 @@ const SessionData = await session();
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
+
+
+        {
+          SessionData && 
+            <div>
+             <Header />
         {children}
+        </div>
+        }
+       
         
       </body>
     </html>

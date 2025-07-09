@@ -23,6 +23,6 @@ const ChallengeStorySchema = new mongoose.Schema({
   ],
 })
 
-const PostStory = mongoose.model('ChallengeStory', ChallengeStorySchema) || mongoose.models.ChallengeStory
+const ChallengeStory = mongoose.model('ChallengeStory', ChallengeStorySchema) || mongoose.models.ChallengeStory
 
-export default PostStory
+export default ChallengeStory

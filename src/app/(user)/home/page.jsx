@@ -10,6 +10,7 @@ import OnlineUsers from '@/components/Home/OnlineUsers.jsx'
 import TrendingSnippets from '@/components/Home/TrendingSnippets.jsx'
 import UpcomingChallenges from '@/components/Home/UpcomingChallenges.jsx'
 import EmotionRoulette from '@/components/Home/EmotionRoulette.jsx'
+import StoryFeed from '@/components/Home/Parts/StoryFeed';
 
 export default function NarraxApp() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -42,7 +43,8 @@ export default function NarraxApp() {
 
         <main className="lg:col-span-2 space-y-6">
           <CreateBattle storyContent={storyContent} setStoryContent={setStoryContent} />
-          <BattleFeed />
+          {/* <BattleFeed /> */}
+          StoryFeed
           <TrendingCategories />
         </main>
 

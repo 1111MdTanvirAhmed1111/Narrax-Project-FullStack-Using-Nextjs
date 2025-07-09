@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const PostStorySchema = new mongoose.Schema({
+const StorySchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -44,6 +44,6 @@ const PostStorySchema = new mongoose.Schema({
   },
 });
 
-const StoryContent = mongoose.model("PostStory", PostStorySchema) ||mongoose.models.PostStory;
+const Story = mongoose.model("Story", StorySchema) || mongoose.models.Story;
 
-export default StoryContent;
+export default Story;

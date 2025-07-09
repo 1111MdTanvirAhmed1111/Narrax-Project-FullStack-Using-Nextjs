@@ -25,25 +25,34 @@ const handler = NextAuth({
           name: user.name,
           email: user.email,
           image: user.image,
+          role: 'user', // optional: default role
         });
       }
 
       return true;
     },
-    async jwt({ token }) {
-      await dbConnect();
-      const dbUser = await User.findOne({ email: token.email });
 
-      if (dbUser) {
-        token.role = dbUser.role;
-        token.id = dbUser._id;
+    async jwt({ token, user }) {
+      await dbConnect();
+
+      // If this is the first time (sign-in), attach _id and role from user
+      if (user?.email) {
+        const dbUser = await User.findOne({ email: user.email });
+
+        if (dbUser) {
+          token.id = dbUser._id.toString(); // make sure it's string
+          token.role = dbUser.role;
+        }
       }
 
       return token;
     },
+
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.role = token.role;
+      if (session?.user) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+      }
       return session;
     },
   },

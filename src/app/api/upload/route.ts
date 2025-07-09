@@ -1,60 +1,59 @@
-import { NextRequest, NextResponse } from 'next/server';
-import multer from 'multer';
-import { v2 as cloudinary } from 'cloudinary';
-import { Readable } from 'stream';
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import dbConnect from '@/lib/dbConnect';
+import User from '@/models/User';
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+const handler = NextAuth({
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: 'jwt',
+  },
+  callbacks: {
+    async signIn({ user }) {
+      await dbConnect();
+
+      const existingUser = await User.findOne({ email: user.email });
+
+      if (!existingUser) {
+        await User.create({
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          role: 'user',
+        });
+      }
+
+      return true;
+    },
+
+    async jwt({ token, user }) {
+      await dbConnect();
+
+      if (user) {
+        // This only runs on initial login
+        const dbUser = await User.findOne({ email: user.email });
+        token.id = dbUser._id.toString(); // Ensure it's a string
+        token.role = dbUser.role;
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      // Ensure these values are carried over to the session object
+      if (session?.user) {
+        session.user.id = token.id || null;
+        session.user.role = token.role || 'user';
+      }
+      return session;
+    },
+  },
 });
 
-// Configure Multer for in-memory storage
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-});
-
-// Helper function to convert buffer to stream
-const bufferToStream = (buffer: Buffer) => {
-  const stream = new Readable();
-  stream.push(buffer);
-  stream.push(null);
-  return stream;
-};
-
-// POST handler for image upload
-export async function POST(req: NextRequest) {
-  try {
-    // Parse form data with Multer
-    const formData = await req.formData();
-    const file = formData.get('image') as File;
-
-    if (!file) {
-      return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
-    }
-
-    // Convert file to buffer
-    const buffer = Buffer.from(await file.arrayBuffer());
-
-    // Upload to Cloudinary
-    const result = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: 'uploads' },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-      bufferToStream(buffer).pipe(stream);
-    });
-
-    // Return the secure URL
-    return NextResponse.json({ url: (result as any).secure_url }, { status: 200 });
-  } catch (error) {
-    console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
-  }
-}
+export { handler as GET, handler as POST };
