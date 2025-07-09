@@ -1,9 +1,9 @@
 import React from 'react'
 import { Plus } from 'lucide-react'
-import GradientCard from '../GradientCard.jsx'
+import GradientCard from '../GradientCard'
 
 import { Input } from '@/components/ui/input';
-import CreatePostDialog from './CreatePostDialog.tsx';
+import CreatePostDialog from './CreatePostDialog';
 import { Suspense } from 'react';
 
 const categoryTags = [
