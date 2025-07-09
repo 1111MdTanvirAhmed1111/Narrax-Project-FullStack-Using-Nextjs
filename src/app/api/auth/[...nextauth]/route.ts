@@ -14,11 +14,19 @@ interface CustomSession extends Session {
   };
 }
 
+// Ensure environment variables are defined
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+  throw new Error('Missing Google OAuth environment variables. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env');
+}
+
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
