@@ -6,8 +6,8 @@ import User from '@/models/User';
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
@@ -35,12 +35,11 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       await dbConnect();
 
-      // If this is the first time (sign-in), attach _id and role from user
       if (user?.email) {
         const dbUser = await User.findOne({ email: user.email });
 
         if (dbUser) {
-          token.id = dbUser._id.toString(); // make sure it's string
+          token.id = dbUser._id.toString();
           token.role = dbUser.role;
         }
       }
