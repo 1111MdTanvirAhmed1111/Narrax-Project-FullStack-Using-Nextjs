@@ -1,9 +1,9 @@
 import React from 'react'
 import { Plus } from 'lucide-react'
-import GradientCard from './GradientCard.jsx'
+import GradientCard from '../GradientCard.jsx'
 
 import { Input } from '@/components/ui/input';
-import CreateDialog from './CreateStory/CreateDialog';
+import CreatePostDialog from './CreatePostDialog.tsx';
 import { Suspense } from 'react';
 
 const categoryTags = [
@@ -18,7 +18,7 @@ const CategoryTag = ({ category }) => (
   </button>
 )
 
-export default function CreateBattle({ storyContent, setStoryContent }) {
+export default function CreateStory({ storyContent, setStoryContent }) {
   return (
     <GradientCard className="animate-on-scroll">
       <div className="flex items-center space-x-3 mb-4">
@@ -26,14 +26,14 @@ export default function CreateBattle({ storyContent, setStoryContent }) {
         <h2 className="text-xl font-bold text-red-300">Create New Battle</h2>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
-      <CreateDialog>
+      <CreatePostDialog >
         <Input type="text" 
            placeholder="Write your story here... (max 500 words)"
         value={storyContent}
         onChange={(e) => setStoryContent(e.target.value)}
          />
 
-      </CreateDialog>
+      </CreatePostDialog>
       </Suspense>
       <div className="flex justify-between items-center mt-4">
         <div className="flex space-x-2">

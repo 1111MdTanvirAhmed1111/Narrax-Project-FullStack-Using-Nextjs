@@ -25,10 +25,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useState } from "react"
 import Image from "next/image"
 import { createPost } from "@/actions/postActions"
-import { ImageInput } from '@/components/Universal/ImageInput';
+// import { ImageInput } from '@/components/Universal/ImageInput';
+import ImagePreview from './ImagePreview';
 
 
-function CreateDialog({ children }) {
+
+
+export default function CreatePostDialog({ children  } : {children: React.ReactNode} ) {
   const { data: session } = useSession()
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -41,21 +44,6 @@ function CreateDialog({ children }) {
     return null
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-    setImages(files)
-
-    // Create preview URLs
-    const previewUrls = files.map((file) => URL.createObjectURL(file))
-    setPreviews(previewUrls)
-
-    // Clean up preview URLs
-    return () => {
-      previewUrls.forEach((url) => URL.revokeObjectURL(url))
-    }
-  }
-
-
 
   return (
 
@@ -64,9 +52,9 @@ function CreateDialog({ children }) {
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="sm:max-w-[600px]">
   <ScrollArea className="h-[80vh]">
-          <form method="POST" action={createPost.bind(null, session?.user?.id)} className="space-y-4 mr-4">
+          <form method="POST" action={createPost.bind(null, session?.user?.id )} className="space-y-4 mr-4">
             <DialogHeader>
-              <DialogTitle className="text-center">Create Post</DialogTitle>
+              <DialogTitle className="text-center">Create Story</DialogTitle>
               <DialogDescription>
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar>
@@ -129,14 +117,29 @@ function CreateDialog({ children }) {
                   name="content"
                 />
               </div>
-             <input type="file" name="image" accept="image/*" required />
-              
+             
+               <ImagePreview />
             </div>
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+             {
+              [
+              {
+                label: 'Cancel',
+                variant: 'outline'
+              },
+              {
+                label: 'Post',
+                variant: 'default',
+                type: 'submit'
+              }
+            ].map((item, index) => (
+              <DialogClose asChild key={index}>
+                <Button variant={item.variant} type={item.type}>
+                  {item.label}
+                </Button>
               </DialogClose>
-              <Button type="submit">Post</Button>
+            ))
+             }
             </DialogFooter>
           </form>
 
@@ -146,5 +149,3 @@ function CreateDialog({ children }) {
     </div>
   )
 }
-
-export default CreateDialog

@@ -1,4 +1,4 @@
-import React from 'react'
+'use client'
 import { Home, Compass, Grid3x3, Gamepad2, Trophy, Plus, Bookmark, Settings } from 'lucide-react'
 import GradientCard from './GradientCard.jsx'
 

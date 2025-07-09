@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import Navigation from '@/components/Home/Navigation.jsx'
-import CreateBattle from '@/components/Home/CreateBattle.jsx'
+// import CreateBattle from '@/components/Home/CreateBattle.jsx'
 import BattleFeed from '@/components/Home/BattleFeed.jsx'
 import TrendingCategories from '@/components/Home/TrendingCategories.jsx'
 import HallOfFame from '@/components/Home/HallOfFame.jsx'
@@ -11,6 +11,7 @@ import TrendingSnippets from '@/components/Home/TrendingSnippets.jsx'
 import UpcomingChallenges from '@/components/Home/UpcomingChallenges.jsx'
 import EmotionRoulette from '@/components/Home/EmotionRoulette.jsx'
 import StoryFeed from '@/components/Home/Parts/StoryFeed';
+import CreateStory from './../../../components/Home/CreateStory/CreateStory';
 
 export default function NarraxApp() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -42,9 +43,10 @@ export default function NarraxApp() {
         </aside>
 
         <main className="lg:col-span-2 space-y-6">
-          <CreateBattle storyContent={storyContent} setStoryContent={setStoryContent} />
+          {/* <CreateBattle storyContent={storyContent} setStoryContent={setStoryContent} /> */}
+          <CreateStory />
           {/* <BattleFeed /> */}
-          StoryFeed
+          
           <TrendingCategories />
         </main>
 
